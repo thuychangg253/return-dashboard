@@ -5,6 +5,7 @@ import pandas as pd
 import streamlit as st
 from google.api_core.exceptions import Forbidden, NotFound
 from google.cloud import bigquery
+from google.oauth2 import service_account
 
 PROJECT = os.getenv("RETURN_BQ_PROJECT", "data-cycle-510201-h1")
 GOLD = f"{PROJECT}.Dataset3_Gold"
@@ -35,7 +36,16 @@ st.markdown(
 
 @st.cache_data(ttl=300, show_spinner="Đang đọc dữ liệu Gold từ BigQuery…")
 def query(project, sql, expected_columns):
-    client = bigquery.Client(project=project)
+    PROJECT = st.secrets.get("RETURN_BQ_PROJECT", "data-cycle-510201-h1")
+
+    credentials = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"]
+    )
+
+    client = bigquery.Client(
+        project=PROJECT,
+        credentials=credentials
+    )
     location = os.getenv("RETURN_BQ_LOCATION")
     if not location:
         try:
