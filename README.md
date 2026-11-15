@@ -1,3 +1,6 @@
+#Điền thông tin service account vào phần [gcp_service_account] trong file, sau đó chạy:
+pip install -r requirements.txt
+streamlit run app.py
 # Returns Intelligence – UI ảnh mẫu + BigQuery Gold (luồng source cũ)
 
 **Giao diện giữ nguyên**: sidebar navy, nút cam, nền pastel xanh nhạt, bốn KPI card và biểu đồ cột xanh/cam. Chỉ thay luồng truy cập dữ liệu trở lại source ban đầu.
