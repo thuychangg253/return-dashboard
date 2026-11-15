@@ -23,35 +23,38 @@ st.set_page_config(page_title="Return Insights", page_icon="↩️", layout="wid
 st.markdown(
     """
     <style>
-      :root { --blue:#1f66c9; --navy:#173d72; --orange:#ffad42; --ink:#14213d; }
-      .stApp { background:#f5f7fc; color:var(--ink); }
-      [data-testid="stHeader"] { background:transparent; }
-      [data-testid="stSidebar"] { min-width:205px; max-width:205px; background:linear-gradient(180deg,#173d72 0%,#23518d 72%,#9ec7f7 100%); }
-      [data-testid="stSidebar"] * { color:white; }
-      [data-testid="stSidebar"] > div:first-child { padding-top:1.8rem; }
-      [data-testid="stSidebar"] .stRadio label { padding:11px 12px; border-radius:12px; margin:3px 0; font-weight:600; }
-      [data-testid="stSidebar"] .stRadio label:has(input:checked) { background:#ffb347; color:#18243b !important; }
-      [data-testid="stSidebar"] .stRadio label:has(input:checked) * { color:#18243b !important; }
-      [data-testid="stSidebar"] button { border-color:rgba(255,255,255,.35); }
-      .block-container { max-width:1080px; padding-top:2.6rem; padding-bottom:2rem; }
-      .hero-title { font-size:30px; font-weight:800; letter-spacing:-.7px; margin:0; color:#14213d; }
-      .hero-sub { color:#596273; font-size:15px; margin-top:4px; }
-      .metric-card { background:white; border:1px solid #edf0f5; box-shadow:0 5px 18px rgba(42,65,110,.07); border-radius:18px; padding:20px 20px 14px; min-height:132px; }
-      .metric-label { font-size:14px; font-weight:650; color:#2c3442; }
-      .metric-value { font-size:32px; font-weight:800; color:#14213d; line-height:1.2; margin-top:14px; }
-      .metric-change { font-size:13px; font-weight:600; color:#5b9f98; margin-left:8px; }
-      .panel { background:white; border:1px solid #edf0f5; box-shadow:0 5px 18px rgba(42,65,110,.06); border-radius:18px; padding:22px 24px 10px; margin-top:20px; }
-      .panel-title { font-size:22px; font-weight:800; color:#14213d; margin:0 0 16px; }
-      .section-label { font-size:16px; font-weight:750; color:#202b42; margin:6px 0 4px; }
-      .stButton>button { border-radius:11px; font-weight:600; }
-      div[data-testid="stMetric"] { background:white; border-radius:18px; border:1px solid #edf0f5; padding:18px; box-shadow:0 5px 18px rgba(42,65,110,.06); }
-      div[data-testid="stMetric"] label { color:#2c3442; font-weight:650; }
-      .stRadio [role="radiogroup"] { gap:8px; }
-      .stRadio [role="radiogroup"] label { background:#f4f6fa; padding:8px 14px; border-radius:20px; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    * { font-family: Inter, Arial, sans-serif; }
+    .stApp { background:#f7f8fd; }
+    [data-testid="stHeader"] { background:transparent; }
+    [data-testid="stSidebar"] { width:205px !important; min-width:205px !important; background:linear-gradient(180deg,#173f78 0%,#214f8b 70%,#b9d7f6 100%); }
+    [data-testid="stSidebar"] > div:first-child { padding:22px 10px 20px; }
+    [data-testid="stSidebar"] * { color:#fff; }
+    [data-testid="stSidebar"] .stRadio label { min-height:46px; margin:4px 0; padding:10px 14px; border-radius:12px; font-size:14px; font-weight:600; align-items:center; }
+    [data-testid="stSidebar"] .stRadio label:has(input:checked) { background:#ffb547; }
+    [data-testid="stSidebar"] .stRadio label:has(input:checked) * { color:#23304a !important; }
+    [data-testid="stSidebar"] .stRadio [data-testid="stMarkdownContainer"] p { margin:0; }
+    .block-container { max-width:1050px; padding:54px 28px 30px !important; }
+    .hero-title { font-size:28px; line-height:1.1; font-weight:800; letter-spacing:-.8px; color:#132044; margin:0; }
+    .hero-sub { color:#526075; font-size:14px; margin-top:8px; }
+    .metric-card { background:#fff; border:1px solid #edf0f6; box-shadow:0 6px 20px rgba(34,57,96,.07); border-radius:16px; padding:20px 18px; min-height:122px; }
+    .metric-label { font-size:14px; font-weight:700; color:#263149; }
+    .metric-value { font-size:32px; font-weight:800; letter-spacing:-.8px; color:#142043; line-height:1; margin-top:20px; white-space:nowrap; }
+    .metric-change { font-size:13px; font-weight:600; color:#67a79b; margin-left:5px; vertical-align:middle; }
+    .panel { background:#fff; border:1px solid #edf0f6; box-shadow:0 5px 18px rgba(34,57,96,.06); border-radius:17px; padding:22px 28px 16px; margin-top:20px; }
+    .panel-title { font-size:21px; font-weight:800; color:#142043; margin:0 0 12px; }
+    .section-label { font-size:16px; font-weight:800; color:#18243d; margin:7px 0 6px; }
+    div[data-testid="stSelectbox"] > div > div { border-radius:24px !important; border:1px solid #eef1f6 !important; background:#fff !important; font-size:13px; }
+    .stRadio [role="radiogroup"] { justify-content:flex-end; gap:0; }
+    .stRadio [role="radiogroup"] label { background:#f2f4f8; padding:7px 14px; margin:0 !important; font-size:13px; }
+    .stRadio [role="radiogroup"] label:has(input:checked) { background:#20599d; color:#fff; }
+    .stRadio [role="radiogroup"] label:has(input:checked) * { color:#fff !important; }
+    .stRadio [role="radiogroup"] label:first-child { border-radius:20px 0 0 20px; }
+    .stRadio [role="radiogroup"] label:last-child { border-radius:0 20px 20px 0; }
     </style>
-    """,
-    unsafe_allow_html=True,
+    """, unsafe_allow_html=True,
 )
+
 
 
 
@@ -197,10 +200,10 @@ def render_overview():
     risk = int(round(flags * 1.0))
     cards = st.columns(4, gap="medium")
     card_data = [
-        ("Tổng số đơn", f"{n:,}", "↑ +2.5%", "📦"),
+        ("Tổng số đơn", f"{n:,}", "↑ +2.5%", "🔷"),
         ("Đơn đã hoàn trả", f"{r:,}", "↑ +1.8%", "↩️"),
-        ("Tỷ lệ hoàn trả", percentage(r, n), "↓ -0.3%", "%"),
-        ("Đơn có rủi ro cao", f"{risk:,}", "↑ +3.1%", "🛡️"),
+        ("Tỷ lệ hoàn trả", percentage(r, n), "↓ -0.3%", "％"),
+        ("Đơn có rủi ro cao", f"{risk:,}", "↑ +3.1%", "🟠"),
     ]
     for col, item in zip(cards, card_data):
         with col: _metric_card(*item)
