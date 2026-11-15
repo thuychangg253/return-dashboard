@@ -23,39 +23,15 @@ st.set_page_config(page_title="Return Insights", page_icon="↩️", layout="wid
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    * { font-family: Inter, Arial, sans-serif; }
-    .stApp { background:#f7f8fd; }
-    [data-testid="stHeader"] { background:transparent; }
-    [data-testid="stSidebar"] { width:205px !important; min-width:205px !important; background:linear-gradient(180deg,#173f78 0%,#214f8b 70%,#b9d7f6 100%); }
-    [data-testid="stSidebar"] > div:first-child { padding:22px 10px 20px; }
-    [data-testid="stSidebar"] * { color:#fff; }
-    [data-testid="stSidebar"] .stRadio label { min-height:46px; margin:4px 0; padding:10px 14px; border-radius:12px; font-size:14px; font-weight:600; align-items:center; }
-    [data-testid="stSidebar"] .stRadio label:has(input:checked) { background:#ffb547; }
-    [data-testid="stSidebar"] .stRadio label:has(input:checked) * { color:#23304a !important; }
-    [data-testid="stSidebar"] .stRadio [data-testid="stMarkdownContainer"] p { margin:0; }
-    .block-container { max-width:1050px; padding:54px 28px 30px !important; }
-    .hero-title { font-size:28px; line-height:1.1; font-weight:800; letter-spacing:-.8px; color:#132044; margin:0; }
-    .hero-sub { color:#526075; font-size:14px; margin-top:8px; }
-    .metric-card { background:#fff; border:1px solid #edf0f6; box-shadow:0 6px 20px rgba(34,57,96,.07); border-radius:16px; padding:20px 18px; min-height:122px; }
-    .metric-label { font-size:14px; font-weight:700; color:#263149; }
-    .metric-value { font-size:32px; font-weight:800; letter-spacing:-.8px; color:#142043; line-height:1; margin-top:20px; white-space:nowrap; }
-    .metric-change { font-size:13px; font-weight:600; color:#67a79b; margin-left:5px; vertical-align:middle; }
-    .panel { background:#fff; border:1px solid #edf0f6; box-shadow:0 5px 18px rgba(34,57,96,.06); border-radius:17px; padding:22px 28px 16px; margin-top:20px; }
-    .panel-title { font-size:21px; font-weight:800; color:#142043; margin:0 0 12px; }
-    .section-label { font-size:16px; font-weight:800; color:#18243d; margin:7px 0 6px; }
-    div[data-testid="stSelectbox"] > div > div { border-radius:24px !important; border:1px solid #eef1f6 !important; background:#fff !important; font-size:13px; }
-    .stRadio [role="radiogroup"] { justify-content:flex-end; gap:0; }
-    .stRadio [role="radiogroup"] label { background:#f2f4f8; padding:7px 14px; margin:0 !important; font-size:13px; }
-    .stRadio [role="radiogroup"] label:has(input:checked) { background:#20599d; color:#fff; }
-    .stRadio [role="radiogroup"] label:has(input:checked) * { color:#fff !important; }
-    .stRadio [role="radiogroup"] label:first-child { border-radius:20px 0 0 20px; }
-    .stRadio [role="radiogroup"] label:last-child { border-radius:0 20px 20px 0; }
+      .block-container {padding-top: 2.4rem; padding-bottom: 2rem;}
+      [data-testid="stMetric"] {
+        border: 1px solid rgba(100,116,139,.32);
+        border-radius: 14px; padding: 14px 17px;
+      }
     </style>
-    """, unsafe_allow_html=True,
+    """,
+    unsafe_allow_html=True,
 )
-
-
 
 
 @st.cache_data(ttl=300, show_spinner="Đang đọc dữ liệu Gold từ BigQuery…")
@@ -164,64 +140,41 @@ def breakdown(df, field, metric):
 
 
 
-def _metric_card(label, value, change, icon):
-    st.markdown(
-        f"""<div class="metric-card"><div class="metric-label">{icon} &nbsp;{label}</div>
-        <div class="metric-value">{value}<span class="metric-change">{change}</span></div></div>""",
-        unsafe_allow_html=True,
-    )
-
-
-def breakdown(df, field, metric, color=BLUE):
-    data = summarize(df, [field]).sort_values(metric, ascending=False)
-    if metric == "rate":
-        data["display"] = data[metric].map(lambda x: f"{x:.2%}")
-        axis = alt.Axis(format="%", tickCount=7, title=None)
-    else:
-        data["display"] = data[metric].map(lambda x: f"{x:,}")
-        axis = alt.Axis(title=None)
-    chart = alt.Chart(data).mark_bar(color=color, cornerRadiusEnd=5, height=27).encode(
-        x=alt.X(f"{metric}:Q", axis=axis, scale=alt.Scale(domainMin=0)),
-        y=alt.Y(f"{field}:N", sort='-x', title=None, axis=alt.Axis(labelFontSize=13, labelPadding=10)),
-        tooltip=[alt.Tooltip(field, title=DIMS[field]), alt.Tooltip("orders", format=",d"), alt.Tooltip("returns", format=",d"), alt.Tooltip("rate", format=".2%")],
-    ).properties(height=max(155, 42 * len(data)))
-    st.altair_chart(chart, use_container_width=True, theme=None)
-
-
 def render_overview():
-    top_l, top_r = st.columns([4, 1])
-    with top_l:
-        st.markdown('<h1 class="hero-title">📊 &nbsp;Tổng quan hoàn trả</h1><div class="hero-sub">Theo dõi tình hình và khám phá các yếu tố ảnh hưởng đến tỷ lệ hoàn trả</div>', unsafe_allow_html=True)
-    with top_r:
-        st.selectbox("", ["📅  Last 30 days", "Last 7 days", "Last 90 days"], label_visibility="collapsed", key="period")
-
+    st.title("Tổng quan hoàn trả")
+    st.caption("Số liệu thực tế từ tập có nhãn · Nguồn: Dataset3_Gold.ml_return_train")
+    st.sidebar.button("Xóa bộ lọc thống kê", on_click=reset_filters, args=("bi",))
     df = get_data(history_sql(), [*DIMS, "orders", "returns", "price_flags"])
+    df = filter_dimensions(df, DIMS, "bi")
     n, r, flags = (int(df[c].sum()) for c in ("orders", "returns", "price_flags"))
-    risk = int(round(flags * 1.0))
-    cards = st.columns(4, gap="medium")
-    card_data = [
-        ("Tổng số đơn", f"{n:,}", "↑ +2.5%", "🔷"),
-        ("Đơn đã hoàn trả", f"{r:,}", "↑ +1.8%", "↩️"),
-        ("Tỷ lệ hoàn trả", percentage(r, n), "↓ -0.3%", "％"),
-        ("Đơn có rủi ro cao", f"{risk:,}", "↑ +3.1%", "🟠"),
-    ]
-    for col, item in zip(cards, card_data):
-        with col: _metric_card(*item)
+    cols = st.columns(4)
+    for col, (label, value) in zip(cols, [
+        ("Tổng số đơn", f"{n:,}"),
+        ("Đơn đã hoàn trả", f"{r:,}"),
+        ("Tỷ lệ hoàn trả", percentage(r, n)),
+        ("Đơn có cờ giá bất thường", f"{flags:,}"),
+    ]):
+        col.metric(label, value)
     if not n:
-        st.info("Không có dữ liệu để hiển thị.")
+        st.info("Không có đơn phù hợp. Hãy thay đổi hoặc xóa bộ lọc.")
         return
 
-    st.markdown('<div class="panel"><div class="panel-title">📊 &nbsp;Hoàn trả theo nhóm</div>', unsafe_allow_html=True)
-    choice = st.radio("", ["Tỷ lệ hoàn trả", "Số lượng hoàn trả"], horizontal=True, label_visibility="collapsed")
+    st.subheader("Hoàn trả theo nhóm")
+    choice = st.radio("Chỉ số biểu đồ", ["Tỷ lệ hoàn trả", "Số lượt hoàn trả"], horizontal=True)
     metric = "rate" if choice == "Tỷ lệ hoàn trả" else "returns"
-    left, right = st.columns(2, gap="large")
-    with left:
-        st.markdown('<div class="section-label">📦 &nbsp;Danh mục sản phẩm</div>', unsafe_allow_html=True)
-        breakdown(df, "product_category", metric, "#4c8ee8")
-    with right:
-        st.markdown('<div class="section-label">🚚 &nbsp;Phương thức vận chuyển</div>', unsafe_allow_html=True)
-        breakdown(df, "shipping_method", metric, "#ffa83d")
-    st.markdown('</div>', unsafe_allow_html=True)
+    for a, b in [
+        ("product_category", "shipping_method"),
+        ("payment_method", "device_type"),
+    ]:
+        for col, field in zip(st.columns(2), (a, b)):
+            with col:
+                st.markdown(f"**{DIMS[field]}**")
+                breakdown(df, field, metric)
+
+    render_heatmap(df, st)
+    st.caption("Tỷ lệ = tổng số đơn hoàn trả / tổng số đơn trong phạm vi lọc. "
+               "Dữ liệu nguồn không có ngày đặt hàng để phân tích theo thời gian.")
+
 
 def render_heatmap(df, panel):
     with panel.container():
@@ -348,12 +301,12 @@ def render_alerts():
     )
 
 
-st.sidebar.markdown("<div style='font-size:38px;text-align:center'>🛍️</div><h3 style='text-align:center;margin-top:0'>E-commerce<br>Returns Intelligence</h3><hr style='border-color:rgba(255,255,255,.2)'>", unsafe_allow_html=True)
-page = st.sidebar.radio("", ["📊  Return Insights", "🔔  Risk Alerts", "✦  Model Explanation", "🗄️  Data Overview"], label_visibility="collapsed")
-st.sidebar.markdown("<div style='margin-top:170px;padding:18px 12px;border-radius:22px;background:rgba(255,255,255,.16);font-weight:700;color:#193761'>📈<br><br>Smarter Insights.<br>Lower Return Rate.</div>", unsafe_allow_html=True)
-if st.sidebar.button("↻  Làm mới dữ liệu"):
+st.sidebar.title("Return Insights")
+page = st.sidebar.radio("Đi tới", ["Tổng quan hoàn trả", "Cảnh báo rủi ro"])
+if st.sidebar.button("Làm mới dữ liệu BigQuery"):
     query.clear()
-if page == "📊  Return Insights":
+st.sidebar.caption("Nguồn: Dataset3_Gold")
+if page == "Tổng quan hoàn trả":
     render_overview()
 else:
     render_alerts()
