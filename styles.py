@@ -8,6 +8,47 @@ STYLES = r"""
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
 :root { --navy:#102C52; --navy2:#254B80; --ink:#101E39; --muted:#5A6B85; --blue:#317EE7; --blueSoft:#E7F1FF; --orange:#FFA94A; --orangeDeep:#EA9739; --surface:#F5F7FF; }
 html, body { font-family:'Be Vietnam Pro','Segoe UI',Arial,sans-serif; }
+/* ===== Sidebar: nút & caption luôn đọc được ===== */
+[data-testid="stSidebar"] .stButton button,
+[data-testid="stSidebar"] [data-testid="stBaseButton-secondary"],
+[data-testid="stSidebar"] [data-testid="stBaseButton-primary"]{
+  background:rgba(255,255,255,.16)!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  color:#FFFFFF!important;
+  border-radius:12px;
+  transition:.16s ease;
+}
+[data-testid="stSidebar"] .stButton button p,
+[data-testid="stSidebar"] .stButton button span,
+[data-testid="stSidebar"] [data-testid="stBaseButton-secondary"] p,
+[data-testid="stSidebar"] [data-testid="stBaseButton-primary"] p{
+  color:#FFFFFF!important;
+  font-weight:600;
+}
+/* hover: chuyển sang cam, chữ đậm để vẫn đọc rõ */
+[data-testid="stSidebar"] .stButton button:hover,
+[data-testid="stSidebar"] [data-testid="stBaseButton-secondary"]:hover{
+  background:linear-gradient(90deg,#FFC46E,#FFB454)!important;
+  border-color:#FFB454!important;
+}
+[data-testid="stSidebar"] .stButton button:hover p,
+[data-testid="stSidebar"] .stButton button:hover span,
+[data-testid="stSidebar"] [data-testid="stBaseButton-secondary"]:hover p{
+  color:#1D2B40!important;
+}
+[data-testid="stSidebar"] .stButton button:focus:not(:active){
+  border-color:#FFB454!important;
+  box-shadow:0 0 0 2px rgba(255,180,84,.35)!important;
+}
+
+/* chú thích "Nguồn: BigQuery Gold..." */
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"],
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] p,
+[data-testid="stSidebar"] [data-testid="stExpander"] small,
+[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stMarkdownContainer"] p{
+  color:#DCEBFA!important;
+  opacity:1!important;
+}
 /* Không ép font mọi class st-* vì sẽ thay thế font của biểu tượng Streamlit. */
 [data-testid="stAppViewContainer"]{ background: #F3F5FE !important; position:relative; }
 [data-testid="stAppViewContainer"]:before{content:"";pointer-events:none;position:fixed;z-index:0;right:-175px;top:-175px;width:580px;height:470px;background:radial-gradient(circle at 72% 45%,rgba(255,167,65,.42) 0 19%,transparent 20%),radial-gradient(circle at 62% 53%,rgba(129,181,247,.44) 0 47%,transparent 47%),radial-gradient(circle at 73% 44%,rgba(184,218,252,.38) 0 62%,transparent 62%);border-radius:50%;opacity:.85;}
