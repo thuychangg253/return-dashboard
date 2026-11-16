@@ -289,8 +289,8 @@ def get_project():
 
 @st.cache_data(show_spinner=False)
 def load_model_metrics():
-    compare = ROOT / "assets" / "final_model_comparison.csv"
-    confusion_file = ROOT / "assets" / "best_model_confusion_matrix.csv"
+    compare = ROOT / "final_model_comparison.csv"
+    confusion_file = ROOT / "best_model_confusion_matrix.csv"
     return (pd.read_csv(compare) if compare.is_file() else None,
             pd.read_csv(confusion_file, index_col=0) if confusion_file.is_file() else None)
 
@@ -517,14 +517,14 @@ elif page == NAVIGATION[2]:
         a, b = st.columns([1, 1])
         with a:
             chart_heading("Grouped Feature Importance")
-            file = ROOT / "assets" / "shap_grouped.png"
+            file = ROOT / "shap_grouped.png"
             if file.is_file():
                 st.image(str(file), use_container_width=True)
             else:
                 st.info("Chưa có ảnh Grouped SHAP. Bổ sung file assets/shap_grouped.png.")
         with b:
             chart_heading("Beeswarm Plot")
-            file = ROOT / "assets" / "shap_beeswarm.png"
+            file = ROOT /"shap_beeswarm.png"
             if file.is_file():
                 st.image(str(file), use_container_width=True)
             else:
@@ -538,7 +538,7 @@ elif page == NAVIGATION[2]:
             st.markdown("**Đóng góp nổi bật trên thang log-odds:**")
             st.markdown("- Not Standard Shipping: **+0,1920**\n- Clothing: **+0,1822**\n- Past Purchase Count: **+0,1528**\n- Used Coupon: **+0,1002**")
         with b:
-            file = ROOT / "assets" / "shap_waterfall.png"
+            file = ROOT / "shap_waterfall.png"
             if file.is_file():
                 st.image(str(file), use_container_width=True)
             else:
@@ -590,7 +590,7 @@ else:
                     show(confusion(cm))
             with b:
                 chart_heading("ROC Curve – Final Models")
-                path = ROOT / "assets" / "roc_curve_final.png"
+                path = ROOT / "roc_curve_final.png"
                 if path.is_file():
                     st.image(str(path), use_container_width=True)
             with st.expander("Bảng kết quả đầy đủ"):
