@@ -536,7 +536,7 @@ elif page == NAVIGATION[2]:
                 unsafe_allow_html=True)
         with b:
             st.markdown('<div class="shap-plot-marker"></div>', unsafe_allow_html=True)
-            file = ROOT / "assets" / "shap_waterfall.png"
+            file = ROOT / "shap_waterfall.png"
             if file.is_file():
                 st.image(str(file), use_container_width=True)
             else:
