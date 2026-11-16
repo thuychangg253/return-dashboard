@@ -473,6 +473,32 @@ elif page == NAVIGATION[1]:
                              "Risk Score (%)", min_value=0, max_value=100, format="%.2f%%")})
             st.download_button("Tải danh sách CSV", shown.to_csv(index=False).encode("utf-8-sig"),
                                file_name="return_risk_alerts.csv", mime="text/csv")
+    with st.container(border=True):
+        pool = filtered_risks[filtered_risks.risk_score.ge(threshold)] if only_high else filtered_risks
+        top50 = pool.sort_values("risk_score", ascending=False).head(50)
+        scope = (f"trong nhóm đơn ≥ ngưỡng {threshold:.2f}".replace(".", ",") if only_high
+                 else "trong toàn bộ đơn đã chấm điểm")
+        st.markdown('<div class="section-title">Top 50 đơn có điểm rủi ro cao nhất</div>'
+                    f'<div class="section-sub">{len(top50)} đơn có điểm dự đoán cao nhất {scope}, '
+                    'ưu tiên rà soát.</div>', unsafe_allow_html=True)
+        if top50.empty:
+            st.info("Không có đơn nào đạt ngưỡng. Hãy hạ thanh trượt ngưỡng hoặc tắt \"Chỉ hiện đơn ≥ ngưỡng\".")
+        else:
+            top_table = pd.DataFrame({
+                "Hạng": range(1, len(top50) + 1),
+                "Mã đơn hàng": top50["order_id"].astype(str).to_numpy(),
+                "Điểm rủi ro dự đoán": top50["risk_score"].to_numpy(),
+                "Mức cảnh báo": ["⚠️ ≥ ngưỡng" if s >= threshold else "Dưới ngưỡng"
+                                 for s in top50["risk_score"]],
+            })
+            st.dataframe(top_table, use_container_width=True, hide_index=True, height=420,
+                         column_config={
+                             "Hạng": st.column_config.NumberColumn("Hạng", width="small"),
+                             "Điểm rủi ro dự đoán": st.column_config.ProgressColumn(
+                                 "Điểm rủi ro dự đoán", min_value=0.0, max_value=1.0, format="%.4f"),
+                         })
+            st.download_button("Tải Top 50 (CSV)", top_table.to_csv(index=False).encode("utf-8-sig"),
+                               file_name="top50_return_risk.csv", mime="text/csv", key="dl_top50")
     st.warning("Ngưỡng 0,60 chỉ phục vụ thử nghiệm. Mô hình có ROC-AUC ≈ 0,60; không dùng điểm này để tự động từ chối đơn.")
     st.caption(f"Nguồn điểm: {dataset['risk_source']}")
 
