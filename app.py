@@ -471,7 +471,7 @@ elif page == NAVIGATION[2]:
                 st.info("Chưa có ảnh Grouped SHAP. Bổ sung file shap_grouped.png.")
         with b:
             chart_heading("Beeswarm Plot")
-            file = ROOT / "assets" / "shap_beeswarm.png"
+            file = ROOT /"shap_beeswarm.png"
             if file.is_file():
                 st.image(str(file), use_container_width=True)
             else:
