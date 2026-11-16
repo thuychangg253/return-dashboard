@@ -84,7 +84,6 @@ html, body { font-family:'Be Vietnam Pro','Segoe UI',Arial,sans-serif; }
 [data-testid="stTabs"] button{font-weight:700;}
 [data-testid="stAlert"]{border-radius:13px;overflow-wrap:anywhere;}
 [data-testid="stAlert"] p{line-height:1.55;white-space:normal;}
-[data-testid="stExpander"] summary{display:flex;align-items:center;gap:.5rem;white-space:normal;}
 [data-testid="stExpander"] summary p{line-height:1.45;margin:0;}
 .small-explainer{color:#63768C;font-size:.75rem;line-height:1.7;margin:14px 0;}
 footer{display:none;}
