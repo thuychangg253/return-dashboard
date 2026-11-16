@@ -510,16 +510,34 @@ elif page == NAVIGATION[2]:
             else:
                 st.info("Chưa có ảnh Beeswarm. Bổ sung file assets/shap_beeswarm.png.")
                 
-    with st.container(border=True):
-        st.markdown('<div class="section-title">Local SHAP – ví dụ một dự đoán</div>', unsafe_allow_html=True)
-        a, b = st.columns([1, 1.25])
+        with st.container(border=True):
+        st.markdown(
+            '<div class="section-title">Local SHAP – ví dụ một dự đoán</div>'
+            '<div class="section-sub">Một đơn trong tập Validation: màu đỏ đẩy xác suất hoàn trả lên, màu xanh kéo xuống.</div>',
+            unsafe_allow_html=True)
+        a, b = st.columns([1, 1.4], gap="large")
         with a:
-            st.metric("Xác suất hoàn trả dự đoán", "74,03%")
-            st.write("Nhãn thực tế trong Validation: **Có hoàn trả (1)**")
-            st.markdown("**Đóng góp nổi bật trên thang log-odds:**")
-            st.markdown("- Not Standard Shipping: **+0,1920**\n- Clothing: **+0,1822**\n- Past Purchase Count: **+0,1528**\n- Used Coupon: **+0,1002**")
+            prob = 74.03
+            contribs = [("Not Standard Shipping", 0.1920), ("Clothing", 0.1822),
+                        ("Past Purchase Count", 0.1528), ("Used Coupon", 0.1002)]
+            top = max(v for _, v in contribs)
+            rows = "".join(
+                f'<div class="shap-row"><div class="shap-name">{n}</div>'
+                f'<div class="shap-bar"><span style="width:{int(v / top * 100)}%"></span></div>'
+                f'<div class="shap-val">{v:+.4f}</div></div>'.replace("+0.", "+0,")
+                for n, v in contribs)
+            st.markdown(
+                f'<div class="shap-prob">'
+                f'<div class="shap-ring" style="--ratio:{prob}"><b>{prob:.0f}%</b></div>'
+                f'<div><div class="shap-prob-label">Xác suất hoàn trả dự đoán</div>'
+                f'<div class="shap-prob-val">{str(prob).replace(".", ",")}%</div>'
+                f'<span class="shap-badge">Nhãn thực tế: Có hoàn trả (1)</span></div></div>'
+                f'<div class="section-caption">Đóng góp nổi bật trên thang log-odds</div>'
+                f'<div class="shap-list">{rows}</div>',
+                unsafe_allow_html=True)
         with b:
-            file = ROOT / "shap_waterfall.png"
+            st.markdown('<div class="shap-plot-marker"></div>', unsafe_allow_html=True)
+            file = ROOT / "assets" / "shap_waterfall.png"
             if file.is_file():
                 st.image(str(file), use_container_width=True)
             else:
