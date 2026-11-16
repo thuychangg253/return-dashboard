@@ -8,6 +8,33 @@ STYLES = r"""
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
 :root { --navy:#102C52; --navy2:#254B80; --ink:#101E39; --muted:#5A6B85; --blue:#317EE7; --blueSoft:#E7F1FF; --orange:#FFA94A; --orangeDeep:#EA9739; --surface:#F5F7FF; }
 html, body { font-family:'Be Vietnam Pro','Segoe UI',Arial,sans-serif; }
+/* ===== Local SHAP ===== */
+.shap-prob{display:flex;align-items:center;gap:20px;padding:20px 22px;margin:8px 0 22px;
+  background:linear-gradient(135deg,#F3F8FF,#FFF6EA);border:1px solid #E6ECF9;border-radius:20px;}
+.shap-ring{position:relative;flex:0 0 86px;width:86px;height:86px;border-radius:50%;
+  background:conic-gradient(#EA9739 calc(var(--ratio) * 1%),#D9E6FB 0);
+  display:flex;align-items:center;justify-content:center;}
+.shap-ring:after{content:"";position:absolute;inset:11px;border-radius:50%;background:#fff;}
+.shap-ring b{position:relative;z-index:1;font-size:.95rem;font-weight:800;color:#102C52;}
+.shap-prob-label{font-size:.85rem;font-weight:600;color:#5A6B85;}
+.shap-prob-val{font-size:2.4rem;font-weight:800;letter-spacing:-.05em;line-height:1.25;color:#0B1936;}
+.shap-badge{display:inline-block;margin-top:4px;padding:4px 12px;border-radius:50px;
+  background:#FFE9CC;color:#9A5A0C;font-size:.76rem;font-weight:700;}
+.shap-list{display:flex;flex-direction:column;gap:12px;margin-top:10px;}
+.shap-row{display:grid;grid-template-columns:minmax(120px,1.1fr) 1.4fr auto;align-items:center;gap:12px;}
+.shap-name{font-size:.9rem;font-weight:600;color:#172743;}
+.shap-bar{height:10px;border-radius:10px;background:#EDF1FC;overflow:hidden;}
+.shap-bar span{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,#FFA94A,#FF6B8B);}
+.shap-val{font-size:.88rem;font-weight:800;color:#D6336C;min-width:62px;text-align:right;}
+
+/* khung cho ảnh waterfall */
+[data-testid="stColumn"]:has(.shap-plot-marker) [data-testid="stImage"] img,
+[data-testid="column"]:has(.shap-plot-marker) [data-testid="stImage"] img{
+  background:#fff;border:1px solid #E6ECF9;border-radius:18px;padding:10px;
+  box-shadow:0 8px 22px rgba(38,69,128,.06);
+}
+@media (max-width:760px){.shap-prob{flex-direction:column;align-items:flex-start;}
+  .shap-row{grid-template-columns:1fr auto;}.shap-bar{grid-column:1 / -1;order:3;}}
 /* ===== Sidebar: nút & caption luôn đọc được ===== */
 [data-testid="stSidebar"] .stButton button,
 [data-testid="stSidebar"] [data-testid="stBaseButton-secondary"],
