@@ -378,24 +378,22 @@ if page == NAVIGATION[0]:
         if filtered.empty:
             st.info("Không có đơn phù hợp với các bộ lọc đang chọn.")
         else:
-            a, b = st.columns(2)
-            with a:
-                chart_heading("Danh mục sản phẩm", "📦")
-                show(group_chart(filtered, "product_category", measure, "#4D93EE", top3=True),
-                     key="chart_top_categories")
-            with b:
-                chart_heading("Phương thức vận chuyển", "🚚")
-                show(group_chart(filtered, "shipping_method", measure, "#FFAD51", top3=True),
-                     key="chart_top_shipping")
-            show_full = st.checkbox("Xem toàn bộ danh mục và nhóm vận chuyển", value=False)
-            if show_full:
-                a, b = st.columns(2)
-                with a:
-                    show(group_chart(filtered, "product_category", measure, "#4D93EE", top3=False),
-                         key="chart_all_categories")
-                with b:
-                    show(group_chart(filtered, "shipping_method", measure, "#FFAD51", top3=False),
-                         key="chart_all_shipping")
+            chart_specs = [
+                ("product_category", "Danh mục sản phẩm", "📦", "#4D93EE"),
+                ("shipping_method", "Phương thức vận chuyển", "🚚", "#FFAD51"),
+                ("payment_method", "Phương thức thanh toán", "💳", "#4D93EE"),
+                ("device_type", "Thiết bị", "📱", "#FFAD51"),
+            ]
+            chart_specs = [s for s in chart_specs if s[0] in filtered.columns]
+            show_full = st.checkbox("Xem toàn bộ các nhóm (danh mục, vận chuyển, thanh toán, thiết bị)",
+                                    value=False)
+            for i in range(0, len(chart_specs), 2):
+                cols = st.columns(2)
+                for col, (field, label, icon, color) in zip(cols, chart_specs[i:i + 2]):
+                    with col:
+                        chart_heading(label, icon)
+                        show(group_chart(filtered, field, measure, color, top3=not show_full),
+                             key=f"chart_{field}_{'all' if show_full else 'top'}")
     st.markdown(
         '<div class="small-explainer">'
         'Chỉ số được tính trên đơn Train có nhãn. Bộ dữ liệu không có thời gian giao dịch, '
