@@ -1,4 +1,7 @@
-streamlit>=1.35,<2
-google-cloud-bigquery>=3,<4
-pandas>=2,<4
-altair>=5,<7
+streamlit>=1.37,<2.0
+pandas>=2.0,<3.0
+numpy>=1.24,<3.0
+plotly>=5.20,<7.0
+google-cloud-bigquery>=3.20,<4.0
+db-dtypes>=1.2
+google-auth>=2.20
