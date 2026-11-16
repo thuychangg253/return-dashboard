@@ -509,7 +509,8 @@ elif page == NAVIGATION[2]:
                 st.image(str(file), use_container_width=True)
             else:
                 st.info("Chưa có ảnh Beeswarm. Bổ sung file assets/shap_beeswarm.png.")
-        with st.container(border=True):
+                
+    with st.container(border=True):
         st.markdown('<div class="section-title">Local SHAP – ví dụ một dự đoán</div>', unsafe_allow_html=True)
         a, b = st.columns([1, 1.25])
         with a:
