@@ -26,7 +26,12 @@ html, body { font-family:'Be Vietnam Pro','Segoe UI',Arial,sans-serif; }
 .shap-bar{height:10px;border-radius:10px;background:#EDF1FC;overflow:hidden;}
 .shap-bar span{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,#FFA94A,#FF6B8B);}
 .shap-val{font-size:.88rem;font-weight:800;color:#D6336C;min-width:62px;text-align:right;}
-
+/* căn đầu ảnh waterfall ngang hàng với thẻ xác suất */
+[data-testid="stElementContainer"]:has(.shap-plot-marker),
+[data-testid="element-container"]:has(.shap-plot-marker){
+  display:none !important;      /* ẩn phần tử đánh dấu để không tạo khoảng trống */
+}
+.shap-prob{margin-top:0 !important;}
 /* khung cho ảnh waterfall */
 [data-testid="stColumn"]:has(.shap-plot-marker) [data-testid="stImage"] img,
 [data-testid="column"]:has(.shap-plot-marker) [data-testid="stImage"] img{
