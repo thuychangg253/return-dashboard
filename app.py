@@ -47,26 +47,6 @@ st.markdown(
         scrollbar-color: #AAB8CC transparent;
     }
 
-    /* Màu nền expander trong sidebar luôn dịu, kể cả khi không hover */
-    section[data-testid="stSidebar"] [data-testid="stExpander"] details > summary {
-        background: #DCE7F5 !important;
-        color: #263B59 !important;
-        border: 1px solid #B8C9DF !important;
-        border-radius: 10px !important;
-        transition: background-color .18s ease, border-color .18s ease;
-    }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] details > summary:hover {
-        background: #CFDDF0 !important;
-        border-color: #A9BED9 !important;
-    }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] details[open] > summary {
-        background: #D3E0F1 !important;
-        border-color: #AFC2DC !important;
-    }
-    section[data-testid="stSidebar"] [data-testid="stExpander"] details > summary p,
-    section[data-testid="stSidebar"] [data-testid="stExpander"] details > summary span {
-        color: #263B59 !important;
-    }
 
     /* Tùy chỉnh thanh cuộn trên Chrome/Edge */
     section[data-testid="stSidebar"] [data-testid="stSidebarContent"]::-webkit-scrollbar {
